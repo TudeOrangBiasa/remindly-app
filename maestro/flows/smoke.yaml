@@ -4,7 +4,7 @@ appId: com.remindly.app.remindly_app
 - extendedWaitUntil:
     visible: Beranda
     timeout: 60000
-- tapOn: Tugas
+- tapOn: Tugas.*
 - assertVisible: Belum ada tugas.*
-- tapOn: Matkul
+- tapOn: Matkul.*
 - assertVisible: Mata Kuliah
