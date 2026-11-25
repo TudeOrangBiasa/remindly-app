@@ -5,6 +5,7 @@ import 'package:flutter/semantics.dart';
 import 'package:remindly_app/app.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   if (kDebugMode) {
     SemanticsBinding.instance.ensureSemantics();
   }
