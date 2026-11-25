@@ -1,0 +1,8 @@
+appId: com.remindly.app.remindly_app
+---
+- launchApp
+- assertVisible: Beranda
+- tapOn: Tugas
+- assertVisible: Belum ada tugas.*
+- tapOn: Matkul
+- assertVisible: Mata Kuliah

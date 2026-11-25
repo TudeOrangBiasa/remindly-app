@@ -1,0 +1,25 @@
+name: Spec
+description: Spec fitur sesuai SRS
+title: "[REM-xx] "
+labels: [spec]
+body:
+  - type: input
+    id: srs
+    attributes:
+      label: Bagian SRS
+      placeholder: contoh 3.2 Tugas
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope dan non scope
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance konkret
+      description: Urutan deadline, filter, warna, guard hapus, validator, persist.
+    validations:
+      required: true

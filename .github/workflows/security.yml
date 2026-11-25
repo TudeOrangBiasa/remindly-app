@@ -1,0 +1,27 @@
+name: Security
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: No secrets or binaries committed
+        run: |
+          echo "scan changed files for tokens and binaries"
+          git diff --name-only origin/main...HEAD 2>/dev/null || git ls-files > /tmp/files.txt
+          FILES=$(git diff --name-only origin/main...HEAD 2>/dev/null || git ls-files)
+          echo "$FILES"
+          echo "$FILES" | grep -E '\.apk$|\.aab$|\.ipa$|\.keystore$|\.jks$|results.*\.enc$|\.log$' && echo "blocked binary or log file" && exit 1 || true
+          if git grep -n -E 'BEGIN (RSA |OPENSSH |AGE-ENCRYPTED )?PRIVATE KEY|AKIA[0-9A-Z]{16}|ghp_[A-Za-z0-9]{36}|github_pat_[A-Za-z0-9_]{22,}|sk-ant-[A-Za-z0-9-]{20,}|xox[bpas]-[A-Za-z0-9-]{10,}' -- . ':!.github/workflows/security.yml'; then
+            echo "possible secret committed"
+            exit 1
+          fi
+          echo "security scan ok"
