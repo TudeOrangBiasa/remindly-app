@@ -17,4 +17,4 @@ Perintah: `flutter test test/contract/tugas_dates_property_test.dart`
 Batas: 300 input acak seed 42 per sifat, hari 2020 sampai 2028. Di luar itu tidak terbukti.
 
 Cakupan: `lib/models/tugas.dart` saja.
-Sync commit: e34b30b. Pindah sync hanya setelah run ulang pada commit baru. Pernah gagal pada varian guard `selesai` dilepas.
+Sync commit: ec4c0c3. Pindah sync hanya setelah run ulang pada commit baru. Pernah gagal pada varian guard `selesai` dilepas.
