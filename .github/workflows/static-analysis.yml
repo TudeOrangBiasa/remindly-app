@@ -28,6 +28,11 @@ jobs:
           test -f docs/specs/01-database.md
           test -f docs/specs/02-navigation.md
           test -f docs/specs/03-design-system.md
+          test -f docs/specs/04-matkul.md
+          test -f docs/specs/05-tugas.md
+          test -f docs/specs/06-beranda-detail.md
+          test -f docs/peta-jalan.md
+          test -f docs/setup-mesin.md
           test -f .github/pull_request_template.md
           echo "scaffold ok"
       - name: No app code yet guard
