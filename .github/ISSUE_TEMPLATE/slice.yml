@@ -1,0 +1,57 @@
+name: Slice
+description: Satu fitur SRS yang bisa dikerjakan satu orang sampai merge
+title: "[REM-xx] "
+labels: [spec]
+body:
+  - type: input
+    id: srs
+    attributes:
+      label: Bagian SRS
+      placeholder: contoh 3.3 Daftar Tugas
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+    validations:
+      required: true
+  - type: textarea
+    id: nonscope
+    attributes:
+      label: Non scope
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance
+      description: Checklist yang bisa dicek PM tanpa baca kode
+    validations:
+      required: true
+  - type: input
+    id: files
+    attributes:
+      label: File milik siapa
+      placeholder: lib/pages/task_list_page.dart
+    validations:
+      required: true
+  - type: input
+    id: flow
+    attributes:
+      label: Flow Maestro
+      placeholder: maestro/flows/tasks.yaml
+    validations:
+      required: true
+  - type: input
+    id: depends
+    attributes:
+      label: Butuh tiket apa dulu
+      placeholder: contoh REM-02a
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Prioritas
+      options: [p0, p1, p2]
+    validations:
+      required: true
