@@ -2,7 +2,15 @@
 
 Aplikasi Pengingat Tugas Kuliah. Flutter plus Dart. Mahasiswa mencatat tugas kuliah dan batas waktunya.
 
-Status: repo setup, no-code. Kode aplikasi belum ada. Scaffold ini hanya menyiapkan gerbang merge agar 3 kontributor bisa jalan paralel.
+Status: fondasi merge, slicing fitur jalan. Lihat `docs/peta-jalan.md`.
+
+## Mulai cepat
+
+1. Baca `docs/setup-mesin.md` sekali untuk Java, emulator, Maestro.
+2. `nix run nixpkgs#fvm -- use 3.47.0 --force` lalu `export PATH="$HOME/fvm/versions/3.47.0/bin:$PATH"`.
+3. `flutter pub get && flutter analyze --fatal-infos --fatal-warnings && flutter test`.
+4. `emulator -avd remindly -no-window -no-audio` lalu `flutter run`.
+5. `maestro test maestro/flows/smoke.yaml`.
 
 ## Aturan merge
 
@@ -15,11 +23,14 @@ Status: repo setup, no-code. Kode aplikasi belum ada. Scaffold ini hanya menyiap
 
 ## Struktur doc
 
-1. `docs/kontrak.md`: kontrak skenario E2E yang akan diaktifkan setelah ada UI.
-2. `docs/e2e-local.md`: cara jalan E2E lokal di device via Maestro.
-3. `docs/verification.md`: definisi verification ringan dan cara jalan lokal.
-4. `.github/workflows/`: 3 gerbang CI.
-5. `.github/pull_request_template.md`: template PR yang menegakkan format dan screenshot.
+1. `docs/srs.md`: scope soal yang dikunci.
+2. `docs/peta-jalan.md`: status tiket REM-01 sampai REM-09.
+3. `docs/setup-mesin.md`: prereqs Java, emulator, Maestro sekali per mesin.
+4. `docs/specs/`: kontrak per slice 01 sampai 06.
+5. `docs/e2e-local.md`: loop E2E Maestro lokal per slice.
+6. `docs/verification.md`: verifikasi formal ringan plus property test.
+7. `.github/workflows/`: 3 gerbang CI.
+8. `.github/pull_request_template.md`: template PR plus format dan screenshot.
 
 ## UI
 

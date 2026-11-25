@@ -11,12 +11,11 @@ Keputusan: pakai rekomendasi ringan. Proof penuh tidak dipakai untuk skala tugas
 5. Filter 4 mode benar: Semua, Belum Selesai, Selesai, Terlambat (terlambat berarti deadline lewat dan status belum selesai).
 6. Hitungan detail matkul konsisten contoh 3 dari 5 selesai.
 
-## Perintah lokal (setelah ada kode)
+## Perintah lokal
 
 1. `very_good_analysis` sebagai base lint, lalu `dart analyze --fatal-infos --fatal-warnings`.
 2. `dart format --set-exit-if-changed .` wajib pass.
-3. `flutter test` untuk 4 contract tests: sorting deadline, filter 4 mode, guard hapus matkul, validasi form judul dan deadline.
-4. Opsional: satu file property test `glados` untuk fungsi murni (tambah lalu hapus sama dengan awal, toggle 2x identitas, serialisasi round-trip).
+3. `flutter test` untuk contract tests plus property test tanggal di `test/contract/`.
 
 ## Playbooks
 

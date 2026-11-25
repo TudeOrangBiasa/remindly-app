@@ -21,10 +21,10 @@ Wajib gambar di deskripsi jika label UI atau judul menyentuh UI. Template sudah 
 3. `flutter test` jika ubah kontrak di `docs/kontrak.md` atau `docs/verification.md`.
 4. E2E lokal dan verifikasi lokal jika ubah flow, bukti tulis di PR.
 
-## Struktur kode yang akan datang
+## Struktur kode
 
-1. `lib/models/`, `lib/database/`, `lib/pages/`, minimal tiga itu sesuai soal.
-2. Tambahan yang disarankan: `lib/widgets/`, `lib/theme/`.
+1. `lib/models/`, `lib/database/`, `lib/pages/` sesuai soal.
+2. `lib/widgets/` komponen, `lib/theme/` token dan branding.
 3. Dilarang commit `build/`, `*.apk`, `*.log`, hasil E2E mentah.
 
 ## Tiket

@@ -19,9 +19,12 @@
 
 1. REM-02: `lib/database/*`, `lib/models/*`, `test/contract/*`.
 2. REM-03: `lib/app.dart`, `lib/pages/*`, NavigationBar.
-3. REM-07: `lib/theme/*`, `lib/widgets/*`, `assets/*`.
-4. REM-08: `test/contract/*`, `docs/verification.md`.
-5. REM-09: `docs/e2e-local.md`, bukti device di PR.
+3. REM-04: `lib/pages/courses_page.dart`, `lib/models/mata_kuliah.dart`, flow courses.
+4. REM-05: `lib/pages/task_*`, `lib/models/tugas.dart`, flow tasks.
+5. REM-06: `lib/pages/home_page.dart`, `lib/pages/course_detail_page.dart`, flow home.
+6. REM-07: `lib/theme/*`, `lib/widgets/*`, `assets/*`.
+7. REM-08: `test/contract/*`, `docs/verification.md`, `docs/verify-*`.
+8. REM-09: `docs/e2e-local.md`, `maestro/flows/*`, bukti device di PR.
 
 ## Sebelum push
 
