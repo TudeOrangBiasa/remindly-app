@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:remindly_app/theme/branding.dart';
 import 'package:remindly_app/theme/tokens.dart';
 
-/// Badge status deadline. Oranye H-1, merah terlambat.
 /// Selalu ada label teks, bukan warna saja.
 class StatusBadge extends StatelessWidget {
   const new hampir({super.key}) : _kind = _Kind.hampir;

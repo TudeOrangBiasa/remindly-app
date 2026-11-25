@@ -5,7 +5,6 @@ import 'package:remindly_app/pages/home_page.dart';
 import 'package:remindly_app/pages/task_list_page.dart';
 import 'package:remindly_app/theme/app_theme.dart';
 
-/// Root app. NavigationBar 3 destinasi sesuai spec 02.
 class RemindlyApp extends StatefulWidget {
   const new({super.key});
 

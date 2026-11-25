@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:remindly_app/theme/tokens.dart';
 
-/// Empty state standar SRS 3.6. Selalu ada tombol tambah.
 class EmptyState extends StatelessWidget {
   const new({required this.message, required this.onAdd, super.key});
 

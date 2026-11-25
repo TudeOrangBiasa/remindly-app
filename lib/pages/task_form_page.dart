@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// Form tambah atau ubah tugas.
-/// Full Form plus TextFormField dipasang di REM-05.
-/// Fondasi hanya sediakan kerangka agar slicing tidak tabrakan.
 class TaskFormPage extends StatelessWidget {
   const new({super.key});
 

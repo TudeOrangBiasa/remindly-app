@@ -2,7 +2,6 @@ import 'package:path/path.dart' as p;
 import 'package:sqflite/sqflite.dart';
 
 /// Skema v1 sesuai docs/specs/01-database.md.
-/// Dipakai REM-02. Jangan ubah tanpa migrasi dan update spec.
 abstract final class AppDatabase {
   static const int version = 1;
   static const String mataKuliahTable = 'mata_kuliah';
