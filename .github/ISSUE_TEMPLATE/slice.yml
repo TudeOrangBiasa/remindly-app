@@ -1,7 +1,7 @@
 name: Slice
 description: Satu fitur SRS yang bisa dikerjakan satu orang sampai merge
 title: "[REM-xx] "
-labels: [spec]
+labels: [spec, needs-triage]
 body:
   - type: input
     id: srs
