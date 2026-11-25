@@ -1,6 +1,7 @@
 # E2E Lokal di Device
+Repo tester: `TudeOrangBiasa/remindly-testers` (dari template upstream, repo app tetap bersih). Brief fitur: `briefs/remindly.md` di repo tester, cermin `AGENT_BRIEF.md` di repo app.
 
-Keputusan: CI hanya static analysis, security analysis, PR format checking. E2E dan verifikasi formal stay di local device.
+Keputusan: CI app hanya static analysis, security analysis, PR format checking. E2E jalan di repo tester, verifikasi formal tetap `flutter test` di repo app.
 
 ## Prasyarat
 
@@ -10,10 +11,11 @@ Keputusan: CI hanya static analysis, security analysis, PR format checking. E2E 
 
 ## Jalan cepat
 
-1. Build lokal: `flutter build apk --debug`.
-2. Dari repo tester: `gh workflow run agent-testers.yml -f source_repo=TudeOrangBiasa/remindly-app -f app_dir=. -f app_id=com.remindly.app -f android_personas=anna,malik -f ios_personas=none -f framework=flutter`.
-3. Atau drive manual: `flutter run` lalu ikuti `docs/kontrak.md` skenario 1 sampai 7.
-4. Kumpulkan bukti: screenshot H-1 oranye dan terlambat merah, video jika ada, log di luar repo.
+1. Token Claude dulu (satu kali, interaktif agar tidak masuk shell history): `gh secret set CLAUDE_CODE_OAUTH_TOKEN --repo TudeOrangBiasa/remindly-testers` atau `ANTHROPIC_API_KEY` untuk API key.
+2. Dispatch hemat (2 Android, tanpa iOS): `gh workflow run agent-testers.yml --repo TudeOrangBiasa/remindly-testers -f source_repo=TudeOrangBiasa/remindly-app -f app_dir=. -f app_id=com.remindly.app -f android_personas=anna,malik -f ios_personas=none -f framework=flutter -f brief=briefs/remindly.md`
+3. Ambil hasil dari clone repo tester: `bash scripts/collect.sh $(gh run list --repo TudeOrangBiasa/remindly-testers --workflow agent-testers.yml -L 1 --json databaseId -q '.[0].databaseId')`. Kunci privat di `~/.mobile-agent-testers`, jangan commit.
+4. Atau drive manual: `flutter run` lalu ikuti `docs/kontrak.md` skenario 1 sampai 7.
+5. Kumpulkan bukti: screenshot H-1 oranye dan terlambat merah, video jika ada, log di luar repo.
 
 ## Aturan bukti PR
 
