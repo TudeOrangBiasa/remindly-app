@@ -21,6 +21,15 @@ HP tersambung via `adb devices`.
 
 1. `smoke.yaml`: buka app, 3 destinasi navigasi tampil, empty state benar.
 
+## Jebakan yang sudah terbukti
+
+1. Flutter mematikan semantics tree. `main.dart` menyalakan via
+   `ensureSemantics` khusus debug. Jangan hapus.
+2. Matcher Maestro exact. Desc tab ada suffix `Tab x of 3`, jadi tap
+   pakai wildcard contoh `Tugas.*`.
+3. Frame pertama debug lambat. Flow mulai dengan `extendedWaitUntil`
+   60 detik, bukan `assertVisible` langsung.
+
 ## Aturan bukti PR
 
 1. PR yang ubah flow wajib isi bagian E2E lokal di template plus hasil
