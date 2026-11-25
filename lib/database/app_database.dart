@@ -1,0 +1,47 @@
+import 'package:path/path.dart' as p;
+import 'package:sqflite/sqflite.dart';
+
+/// Skema v1 sesuai docs/specs/01-database.md.
+/// Dipakai REM-02. Jangan ubah tanpa migrasi dan update spec.
+abstract final class AppDatabase {
+  static const int version = 1;
+  static const String mataKuliahTable = 'mata_kuliah';
+  static const String tugasTable = 'tugas';
+
+  static Future<Database> open({String? path}) async {
+    final dbPath = path ?? p.join(await getDatabasesPath(), 'remindly.db');
+    return await openDatabase(
+      dbPath,
+      version: version,
+      onConfigure: (db) async {
+        await db.execute('PRAGMA foreign_keys = ON');
+      },
+      onCreate: (db, version) async {
+        await db.execute('''
+CREATE TABLE $mataKuliahTable(
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  nama TEXT NOT NULL UNIQUE,
+  dosen TEXT NOT NULL DEFAULT '',
+  hari TEXT NOT NULL DEFAULT ''
+)''');
+        await db.execute('''
+CREATE TABLE $tugasTable(
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  matkul_id INTEGER NOT NULL REFERENCES $mataKuliahTable(id) ON DELETE RESTRICT,
+  judul TEXT NOT NULL,
+  deskripsi TEXT NOT NULL DEFAULT '',
+  deadline INTEGER NOT NULL,
+  prioritas TEXT NOT NULL DEFAULT 'Sedang',
+  selesai INTEGER NOT NULL DEFAULT 0
+)''');
+        await db.execute(
+          'CREATE INDEX idx_tugas_deadline ON $tugasTable(deadline)',
+        );
+        await db.execute(
+          'CREATE INDEX idx_tugas_matkul_deadline '
+          'ON $tugasTable(matkul_id, deadline)',
+        );
+      },
+    );
+  }
+}
