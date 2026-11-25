@@ -1,0 +1,22 @@
+# Flutter gitignore, dipakai walau lib belum ada agar Flutter init nanti bersih.
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+coverage/
+lib/generated/
+ios/Flutter/Generated.xcconfig
+ios/Flutter/flutter_export_environment.sh
+android/.gradle/
+android/local.properties
+*.iml
+*.ipr
+*.iws
+.idea/
+.vscode/
+*.log
+.DS_Store
+.fvm/flutter_sdk

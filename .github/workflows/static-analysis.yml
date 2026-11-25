@@ -1,0 +1,47 @@
+name: Static Analysis
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  hygiene:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Required scaffold files
+        run: |
+          test -f README.md
+          test -f LICENSE
+          test -f .gitignore
+          test -f .fvmrc
+          test -f CODEOWNERS
+          test -f docs/kontrak.md
+          test -f docs/e2e-local.md
+          test -f docs/verification.md
+          test -f .github/pull_request_template.md
+          echo "scaffold ok"
+      - name: No app code yet guard
+        run: |
+          if [ -f pubspec.yaml ]; then
+            echo "pubspec found, flutter project started, static flutter checks apply in later PR"
+          else
+            echo "no-code stage, skip flutter"
+          fi
+          if [ -d lib ]; then
+            echo "lib exists, ensure flutter analyze runs in follow-up workflow"
+          fi
+      - name: Flutter analyze when code exists
+        uses: subosito/flutter-action@v2
+        if: hashFiles('pubspec.yaml') != ''
+        with:
+          flutter-version: '3.47.0'
+          channel: stable
+      - name: Run analyze strict
+        if: hashFiles('pubspec.yaml') != ''
+        run: |
+          flutter --version
+          dart format --set-exit-if-changed .
+          flutter analyze --fatal-infos --fatal-warnings
