@@ -1,0 +1,11 @@
+name: Task
+description: Tugas fondasi atau teknis
+title: "[CHORE] "
+labels: [foundation]
+body:
+  - type: textarea
+    id: done
+    attributes:
+      label: Definisi selesai
+    validations:
+      required: true

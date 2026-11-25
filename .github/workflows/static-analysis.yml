@@ -18,9 +18,16 @@ jobs:
           test -f .gitignore
           test -f .fvmrc
           test -f CODEOWNERS
+          test -f CONTRIBUTING.md
+          test -f analysis_options.yaml
+          test -f .editorconfig
+          test -f docs/srs.md
           test -f docs/kontrak.md
           test -f docs/e2e-local.md
           test -f docs/verification.md
+          test -f docs/specs/01-database.md
+          test -f docs/specs/02-navigation.md
+          test -f docs/specs/03-design-system.md
           test -f .github/pull_request_template.md
           echo "scaffold ok"
       - name: No app code yet guard
