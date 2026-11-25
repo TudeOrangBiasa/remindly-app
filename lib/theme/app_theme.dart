@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:remindly_app/theme/branding.dart';
 
-/// Theme tunggal. Pages hanya pakai Theme.of, tidak bikin ThemeData sendiri.
 abstract final class AppTheme {
   static ThemeData light() {
     final base = ThemeData.light(useMaterial3: true);

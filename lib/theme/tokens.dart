@@ -1,5 +1,3 @@
-/// Design tokens Remindly, satu sumber untuk slicing.
-/// Jangan hardcode warna, spacing, radius, durasi di pages atau widgets.
 abstract final class AppTokens {
   static const double radiusS = 8;
   static const double radiusM = 16;

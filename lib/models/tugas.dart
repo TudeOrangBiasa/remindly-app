@@ -1,5 +1,3 @@
-/// Kontrak Tugas, dipakai REM-02 REM-05 REM-08.
-/// deadline epoch ms. selesai 0 atau 1 di DB, bool di model.
 enum Prioritas { rendah, sedang, tinggi }
 
 extension PrioritasLabel on Prioritas {
@@ -34,14 +32,12 @@ class Tugas {
   final Prioritas prioritas;
   final bool selesai;
 
-  /// True jika lewat dan belum selesai, dipakai warna merah dan filter.
   bool isTerlambat(DateTime now) {
     final today = DateTime(now.year, now.month, now.day);
     final due = DateTime(deadline.year, deadline.month, deadline.day);
     return !selesai && due.isBefore(today);
   }
 
-  /// True jika H-1 dan belum selesai, dipakai warna oranye.
   bool isHampir(DateTime now) {
     final today = DateTime(now.year, now.month, now.day);
     final due = DateTime(deadline.year, deadline.month, deadline.day);

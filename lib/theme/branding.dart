@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Branding Remindly, hand-tuned light dan dark.
-/// Tidak pakai dynamic color penuh di v1 agar kontras badge stabil.
 abstract final class AppBranding {
-  static const Color seed = Color(0xFF2F6B4F);
-
   static const Color lightPrimary = Color(0xFF2F6B4F);
   static const Color lightOnPrimary = Color(0xFFFFFFFF);
   static const Color lightSurface = Color(0xFFF6F1E7);

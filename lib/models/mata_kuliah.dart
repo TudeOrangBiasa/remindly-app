@@ -1,5 +1,3 @@
-/// Kontrak MataKuliah, dipakai REM-02 dan REM-04.
-/// Nama trim non kosong dan unik case-insensitive dicek di database.
 class MataKuliah {
   const new({required this.nama, this.id, this.dosen = '', this.hari = ''})
     : assert(nama.length > 0, 'nama wajib diisi');
