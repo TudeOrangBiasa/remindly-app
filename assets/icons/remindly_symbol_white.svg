@@ -1,0 +1,51 @@
+<svg fill="#ffffff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-labelledby="title"><title>Remindly symbol</title>
+  <title id="title">Remindly logo symbol (monochrome)</title>
+  <path fill="#ffffff" fill-rule="evenodd" d="
+    M 80 24
+    H 176
+    A 56 56 0 0 1 232 80
+    V 176
+    A 56 56 0 0 1 176 232
+    H 80
+    A 56 56 0 0 1 24 176
+    V 80
+    A 56 56 0 0 1 80 24
+    Z
+    M 84 62
+    H 148
+    A 14 14 0 0 1 162 76
+    V 82
+    H 70
+    V 76
+    A 14 14 0 0 1 84 62
+    Z
+    M 74 94
+    H 182
+    A 14 14 0 0 1 196 108
+    V 114
+    H 60
+    V 108
+    A 14 14 0 0 1 74 94
+    Z
+    M 72 126
+    H 184
+    A 20 20 0 0 1 204 146
+    V 174
+    A 20 20 0 0 1 184 194
+    H 72
+    A 20 20 0 0 1 52 174
+    V 146
+    A 20 20 0 0 1 72 126
+    Z
+    M 96 164
+    L 110 150
+    L 124 164
+    L 154 134
+    L 168 148
+    L 124 192
+    Z
+    M 188 50
+    A 18 18 0 1 0 188.1 50
+    Z
+  "/>
+</svg>
