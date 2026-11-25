@@ -19,4 +19,6 @@ android/local.properties
 .vscode/
 *.log
 .DS_Store
-.fvm/flutter_sdk
+
+# FVM Version Cache
+.fvm/
