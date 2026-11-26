@@ -12,35 +12,49 @@ abstract final class AppDatabase {
     return await openDatabase(
       dbPath,
       version: version,
-      onConfigure: (db) async {
-        await db.execute('PRAGMA foreign_keys = ON');
-      },
-      onCreate: (db, version) async {
-        await db.execute('''
+      onConfigure: onConfigure,
+      onCreate: onCreate,
+      onUpgrade: onUpgrade,
+    );
+  }
+
+  static Future<void> onConfigure(Database db) async {
+    await db.execute('PRAGMA foreign_keys = ON');
+  }
+
+  static Future<void> onCreate(Database db, int version) async {
+    await db.execute('''
 CREATE TABLE $mataKuliahTable(
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  nama TEXT NOT NULL UNIQUE,
+  nama TEXT NOT NULL COLLATE NOCASE UNIQUE,
   dosen TEXT NOT NULL DEFAULT '',
   hari TEXT NOT NULL DEFAULT ''
 )''');
-        await db.execute('''
+    await db.execute('''
 CREATE TABLE $tugasTable(
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   matkul_id INTEGER NOT NULL REFERENCES $mataKuliahTable(id) ON DELETE RESTRICT,
   judul TEXT NOT NULL,
   deskripsi TEXT NOT NULL DEFAULT '',
   deadline INTEGER NOT NULL,
-  prioritas TEXT NOT NULL DEFAULT 'Sedang',
+  prioritas TEXT NOT NULL DEFAULT 'Sedang'
+    CHECK (prioritas IN ('Rendah', 'Sedang', 'Tinggi')),
   selesai INTEGER NOT NULL DEFAULT 0
 )''');
-        await db.execute(
-          'CREATE INDEX idx_tugas_deadline ON $tugasTable(deadline)',
-        );
-        await db.execute(
-          'CREATE INDEX idx_tugas_matkul_deadline '
-          'ON $tugasTable(matkul_id, deadline)',
-        );
-      },
+    await db.execute(
+      'CREATE INDEX idx_tugas_deadline ON $tugasTable(deadline)',
+    );
+    await db.execute(
+      'CREATE INDEX idx_tugas_matkul_deadline '
+      'ON $tugasTable(matkul_id, deadline)',
     );
   }
+
+  /// Pola migrasi: cabang per oldVersion saat [version] naik.
+  /// v1 baseline, belum ada migrasi.
+  static Future<void> onUpgrade(
+    Database db,
+    int oldVersion,
+    int newVersion,
+  ) async {}
 }
