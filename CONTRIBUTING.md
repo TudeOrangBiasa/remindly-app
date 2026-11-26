@@ -18,8 +18,10 @@ Wajib gambar di deskripsi jika label UI atau judul menyentuh UI. Template sudah 
 
 1. `dart format --set-exit-if-changed .`
 2. `flutter analyze --fatal-infos --fatal-warnings`
-3. `flutter test` jika ubah kontrak di `docs/kontrak.md` atau `docs/verification.md`.
+3. `flutter test` hijau. Gate pre-PR: verification + unslop + tanpa komentar baru di `lib/` dan `test/`.
 4. E2E lokal dan verifikasi lokal jika ubah flow, bukti tulis di PR.
+5. Body PR ikut `.github/pull_request_template.md`: Summary, Evidence, Merge Danger.
+6. Opsional commit gate lokal: `git config core.hooksPath githooks`.
 
 ## Struktur kode
 
