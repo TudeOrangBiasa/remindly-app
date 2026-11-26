@@ -50,8 +50,6 @@ CREATE TABLE $tugasTable(
     );
   }
 
-  /// Pola migrasi: cabang per oldVersion saat [version] naik.
-  /// v1 baseline, belum ada migrasi.
   static Future<void> onUpgrade(
     Database db,
     int oldVersion,
