@@ -168,5 +168,54 @@ void main() {
       );
       await db.close();
     });
+
+    test('ubah roundtrip dan validasi', () async {
+      final db = await openRepoDb();
+      final repo = TugasRepository(db);
+      final matkul = await tambahMatkul(db, 'Matematika');
+
+      final id = await repo.tambah(
+        Tugas(matkulId: matkul, judul: 'PR 1', deadline: DateTime(2026, 5, 11)),
+        sekarang: sekarang,
+      );
+      await repo.ubah(
+        Tugas(
+          id: id,
+          matkulId: matkul,
+          judul: 'PR 1 revisi',
+          deadline: DateTime(2026, 5, 12),
+          prioritas: Prioritas.tinggi,
+        ),
+        sekarang: sekarang,
+      );
+      final tersimpan = await repo.perId(id);
+      expect(tersimpan?.judul, 'PR 1 revisi');
+      expect(tersimpan?.prioritas, Prioritas.tinggi);
+
+      await expectLater(
+        () => repo.ubah(
+          Tugas(
+            id: id,
+            matkulId: matkul,
+            judul: 'Lewat',
+            deadline: DateTime(2026, 5, 9),
+          ),
+          sekarang: sekarang,
+        ),
+        throwsA(isA<ArgumentError>()),
+      );
+      await expectLater(
+        () => repo.ubah(
+          Tugas(
+            matkulId: matkul,
+            judul: 'Tanpa id',
+            deadline: DateTime(2026, 5, 11),
+          ),
+          sekarang: sekarang,
+        ),
+        throwsA(isA<ArgumentError>()),
+      );
+      await db.close();
+    });
   });
 }

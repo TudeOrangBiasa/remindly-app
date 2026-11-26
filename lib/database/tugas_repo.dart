@@ -10,17 +10,7 @@ class TugasRepository {
   final Database db;
 
   Future<int> tambah(Tugas tugas, {DateTime? sekarang}) async {
-    if (tugas.judul.trim().isEmpty) throw ArgumentError('judul wajib diisi');
-    final now = sekarang ?? DateTime.now();
-    final hariIni = DateTime(now.year, now.month, now.day);
-    final batas = DateTime(
-      tugas.deadline.year,
-      tugas.deadline.month,
-      tugas.deadline.day,
-    );
-    if (batas.isBefore(hariIni)) {
-      throw ArgumentError('deadline tidak boleh lewat');
-    }
+    _wajibValid(tugas, sekarang ?? DateTime.now());
     return await db.insert(AppDatabase.tugasTable, <String, Object?>{
       'matkul_id': tugas.matkulId,
       'judul': tugas.judul.trim(),
@@ -29,6 +19,25 @@ class TugasRepository {
       'prioritas': tugas.prioritas.label,
       'selesai': tugas.selesai ? 1 : 0,
     });
+  }
+
+  Future<int> ubah(Tugas tugas, {DateTime? sekarang}) async {
+    _wajibValid(tugas, sekarang ?? DateTime.now());
+    final id = tugas.id;
+    if (id == null) throw ArgumentError('ubah butuh id');
+    return await db.update(
+      AppDatabase.tugasTable,
+      <String, Object?>{
+        'matkul_id': tugas.matkulId,
+        'judul': tugas.judul.trim(),
+        'deskripsi': tugas.deskripsi.trim(),
+        'deadline': tugas.deadline.millisecondsSinceEpoch,
+        'prioritas': tugas.prioritas.label,
+        'selesai': tugas.selesai ? 1 : 0,
+      },
+      where: 'id = ?',
+      whereArgs: <Object?>[id],
+    );
   }
 
   Future<List<Tugas>> daftar(FilterTugas filter, {DateTime? sekarang}) async {
@@ -81,5 +90,18 @@ class TugasRepository {
     );
     if (changed == 0) return null;
     return await perId(id);
+  }
+
+  void _wajibValid(Tugas tugas, DateTime now) {
+    if (tugas.judul.trim().isEmpty) throw ArgumentError('judul wajib diisi');
+    final hariIni = DateTime(now.year, now.month, now.day);
+    final batas = DateTime(
+      tugas.deadline.year,
+      tugas.deadline.month,
+      tugas.deadline.day,
+    );
+    if (batas.isBefore(hariIni)) {
+      throw ArgumentError('deadline tidak boleh lewat');
+    }
   }
 }
