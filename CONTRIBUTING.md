@@ -3,7 +3,7 @@
 ## Branch
 
 1. `main` terkunci, wajib PR, 0 approval cukup, 3 checks hijau.
-2. Nama branch: `REM-xx/deskripsi-singkat`, contoh `REM-02/database-sqflite`.
+2. Nama branch: slice `rem-02a-deskripsi-singkat`, chore/docs `chore/deskripsi` atau `docs/deskripsi`. Contoh `rem-02b-repo-matkul`.
 3. Satu PR satu tiket, jangan campur scope.
 
 ## Judul PR

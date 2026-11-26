@@ -59,9 +59,9 @@ Proyek ini membagi verifikasi menjadi 3 lapisan agar kualitas kode tetap terjaga
 
 ## Alur kontribusi dan aturan merge
 
-Branch `main` dikunci dan seluruh perubahan wajib masuk melalui pull request. Satu pull request hanya mengerjakan satu tiket (`REM-xx`) dengan nama branch berpola `REM-xx/deskripsi-singkat`.
+Branch `main` dikunci dan seluruh perubahan wajib masuk melalui pull request. Satu pull request hanya mengerjakan satu tiket (`REM-xx`) dengan nama branch berpola `rem-02a-deskripsi-singkat` untuk slice, `chore/deskripsi` atau `docs/deskripsi` untuk non-slice.
 
-1. **Tiga gerbang CI wajib hijau.** Pull request diperiksa oleh workflow `Static Analysis` (kelengkapan berkas, format, dan `flutter analyze`), `Security` (pemindaian rahasia dan larangan commit biner seperti `.apk` atau `.log`), serta `PR Format` (format judul PR, bagian Checklist, dan kewajiban screenshot untuk perubahan UI).
+1. **Tiga gerbang CI wajib hijau.** Pull request diperiksa oleh workflow `Static Analysis` (kelengkapan berkas, format, `flutter analyze`, `flutter test`, dan larangan komentar baru di `lib/` dan `test/`), `Security` (pemindaian rahasia dan larangan commit biner seperti `.apk` atau `.log`), serta `PR Format` (format judul PR, bagian Checklist, dan kewajiban screenshot untuk perubahan UI).
 2. **Aturan PR UI.** Pull request yang menyentuh UI atau memakai label UI wajib menyertakan gambar screenshot pada deskripsi PR sesuai [.github/pull_request_template.md](.github/pull_request_template.md).
 3. **Panduan kontributor.** Aturan lengkap mengenai penamaan judul PR, pembagian tugas, dan pemeriksaan lokal sebelum push dijelaskan di [CONTRIBUTING.md](CONTRIBUTING.md).
 
