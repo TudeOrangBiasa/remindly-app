@@ -25,7 +25,7 @@ git diff --cached -- lib/ test/
 5. Generalitas spekulatif: opsi, flag, parameter di luar scope tiket.
 6. Komentar yang menjelaskan ulang kode (lempar ke skill precommit-no-comments).
 7. Test lemah: tautologi, echo source, `expect` tanpa klaim perilaku konsumen.
-8. Em-dash dan en-dash di baris baru: hapus, ganti titik dua, koma, atau pecah kalimat. Pola cek: `git diff --cached -U0 | grep -E '^\+.*[—–]'`.
+8. Em-dash dan en-dash di baris baru: hapus, ganti titik dua, koma, atau pecah kalimat. Pola cek: `git diff --cached -U0 | grep -E '^\+.*[—–]'`. Pola cek itu sendiri satu-satunya pengecualian.
 
 ## Keluar
 
