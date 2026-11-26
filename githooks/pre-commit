@@ -1,0 +1,20 @@
+#!/bin/sh
+# Gate commit cepat: format + tanpa komentar full-line di baris baru.
+# Aktifkan sekali per clone: git config core.hooksPath githooks
+export PATH="$HOME/fvm/versions/3.47.0/bin:$PATH"
+
+staged="$(git diff --cached --name-only --diff-filter=ACM -- '*.dart')"
+if [ -n "$staged" ]; then
+  # shellcheck disable=SC2086
+  dart format --output=none --set-exit-if-changed $staged || {
+    echo 'format dulu: dart format <file>'
+    exit 1
+  }
+fi
+
+if git diff --cached --unified=0 -- \
+  ':(glob)lib/**/*.dart' ':(glob)test/**/*.dart' |
+  grep -qE '^\+\s*(//|/\*)'; then
+  echo 'hapus komentar full-line di baris baru lib/ dan test/'
+  exit 1
+fi
