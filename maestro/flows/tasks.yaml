@@ -14,4 +14,5 @@ appId: com.remindly.app.remindly_app
 - inputText: PR 1
 - tapOn: Batas waktu
 - tapOn: OK
+- tapOn: Simpan
 - assertVisible: Selesai PR 1
