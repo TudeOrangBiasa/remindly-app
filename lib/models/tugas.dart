@@ -24,6 +24,20 @@ class Tugas {
     this.selesai = false,
   }) : assert(judul.trim().isNotEmpty, 'judul wajib diisi');
 
+  factory fromMap(Map<String, Object?> map) {
+    return Tugas(
+      id: map['id'] as int?,
+      matkulId: map['matkul_id']! as int,
+      judul: map['judul']! as String,
+      deskripsi: map['deskripsi'] as String? ?? '',
+      deadline: DateTime.fromMillisecondsSinceEpoch(map['deadline']! as int),
+      prioritas: Prioritas.values.firstWhere(
+        (e) => e.label == map['prioritas'],
+      ),
+      selesai: (map['selesai']! as int) == 1,
+    );
+  }
+
   final int? id;
   final int matkulId;
   final String judul;
