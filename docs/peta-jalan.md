@@ -6,11 +6,13 @@ Status slice halus. Sumber benar tetap Issues. Update baris saat merge.
 
 1. REM-01 fondasi codebase plus expressive.
 2. REM-08 verifikasi tanggal plus skill.
+3. #28 02a skema v1 plus migrasi (PR #47).
+4. #29 02b repo matkul plus guard hapus (PR #48).
 
 ## Buka, per bundel vertikal
 
-Bundel A database plus matkul. Isi: #28 02a skema, #29 02b repo
-matkul, #30 02c repo tugas, #33 04a list tambah, #34 04b ubah hapus.
+Bundel A database plus matkul. Isi: #30 02c repo tugas (PR #49 antre
+merge), #33 04a list tambah, #34 04b ubah hapus.
 
 Bundel B navigasi plus beranda. Isi: #31 03a NavigationBar, #32 03b
 push refresh, #39 06a beranda, #40 06b detail.

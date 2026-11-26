@@ -29,5 +29,6 @@
 ## Sebelum push
 
 1. Format, analyze, test hijau lokal.
-2. Judul PR `[REM-xx]` plus checklist, screenshot jika label UI.
-3. Jangan commit `build/`, `*.apk`, `*.log`, hasil E2E mentah.
+2. Gate pre-PR: skill `.agents/skills/precommit-unslop/` + `.agents/skills/precommit-no-comments/`, lalu verification hijau.
+3. Judul PR `[REM-xx]` plus checklist, body ikut `.github/pull_request_template.md`. Screenshot jika label UI.
+4. Jangan commit `build/`, `*.apk`, `*.log`, hasil E2E mentah.
