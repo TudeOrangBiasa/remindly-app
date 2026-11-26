@@ -74,14 +74,12 @@ class TugasRepository {
   }
 
   Future<Tugas?> toggleSelesai(int id) async {
-    final tugas = await perId(id);
-    if (tugas == null) return null;
-    await db.update(
-      AppDatabase.tugasTable,
-      <String, Object?>{'selesai': tugas.selesai ? 0 : 1},
-      where: 'id = ?',
-      whereArgs: <Object?>[id],
+    final changed = await db.rawUpdate(
+      'UPDATE ${AppDatabase.tugasTable} SET selesai = 1 - selesai '
+      'WHERE id = ?',
+      <Object?>[id],
     );
+    if (changed == 0) return null;
     return await perId(id);
   }
 }
