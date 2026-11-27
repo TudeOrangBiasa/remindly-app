@@ -1,0 +1,12 @@
+appId: com.remindly.app.remindly_app
+---
+- launchApp
+- extendedWaitUntil:
+    visible: Beranda
+    timeout: 60000
+- assertVisible:
+    id: angka-belum
+- assertVisible:
+    id: angka-terlambat
+- assertVisible: Tugas terdekat
+- assertVisible: Belum ada tugas.*
