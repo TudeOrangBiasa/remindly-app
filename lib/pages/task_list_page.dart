@@ -8,6 +8,7 @@ import 'package:remindly_app/models/tugas.dart';
 import 'package:remindly_app/pages/task_form_page.dart';
 import 'package:remindly_app/theme/tokens.dart';
 import 'package:remindly_app/widgets/empty_state.dart';
+import 'package:remindly_app/widgets/status_badge.dart';
 import 'package:sqflite/sqflite.dart';
 
 class TaskListPage extends StatefulWidget {
@@ -144,6 +145,7 @@ class _TaskListPageState extends State<TaskListPage> {
             onAdd: _bukaForm,
           );
         }
+        final sekarang = DateTime.now();
         return ListView.builder(
           itemCount: tugas.length,
           itemBuilder: (context, i) {
@@ -157,6 +159,11 @@ class _TaskListPageState extends State<TaskListPage> {
               ),
               title: Text(t.judul),
               subtitle: Text(_tampil(t.deadline)),
+              trailing: t.isTerlambat(sekarang)
+                  ? const StatusBadge.terlambat()
+                  : t.isHampir(sekarang)
+                  ? const StatusBadge.hampir()
+                  : null,
               onTap: () => _ubah(t),
             );
           },

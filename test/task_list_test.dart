@@ -5,6 +5,8 @@ import 'package:remindly_app/database/tugas_repo.dart';
 import 'package:remindly_app/models/mata_kuliah.dart';
 import 'package:remindly_app/models/tugas.dart';
 import 'package:remindly_app/pages/task_list_page.dart';
+import 'package:remindly_app/theme/branding.dart';
+import 'package:remindly_app/widgets/status_badge.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import 'test_helpers.dart';
@@ -215,6 +217,82 @@ void main() {
       await pilih(tester, FilterTugas.terlambat);
       expect(find.text('Tidak ada tugas untuk filter ini.'), findsOneWidget);
       expect(find.byType(ListTile), findsNothing);
+      await tutupDb(tester, db);
+    });
+  });
+
+  group('Badge tugas REM-05d', () {
+    testWidgets('H-1 oranye, lewat merah, selesai tanpa badge', (tester) async {
+      final db = await bukaDb(tester);
+      final matkul = await bacaDb(
+        tester,
+        () => MataKuliahRepository(db).tambah(const MataKuliah(nama: 'Kimia')),
+      );
+      final repo = TugasRepository(db);
+      final kini = DateTime.now();
+      final lampau = kini.subtract(const Duration(days: 10));
+      Future<int> tanam(
+        String judul,
+        DateTime deadline, {
+        bool selesai = false,
+      }) {
+        return bacaDb(
+          tester,
+          () => repo.tambah(
+            Tugas(
+              matkulId: matkul,
+              judul: judul,
+              deadline: deadline,
+              selesai: selesai,
+            ),
+            sekarang: lampau,
+          ),
+        );
+      }
+
+      final lewat = await tanam(
+        'Lewat',
+        kini.subtract(const Duration(days: 3)),
+      );
+      final lewatSelesai = await tanam(
+        'Lewat selesai',
+        kini.subtract(const Duration(days: 2)),
+        selesai: true,
+      );
+      final besok = await tanam('Besok', kini.add(const Duration(days: 1)));
+      final besokSelesai = await tanam(
+        'Besok selesai',
+        kini.add(const Duration(days: 1)),
+        selesai: true,
+      );
+      final jauh = await tanam('Jauh', kini.add(const Duration(days: 7)));
+      await pumpDaftar(tester, db);
+
+      Finder badgeDi(int id) => find.descendant(
+        of: find.byKey(Key('tugas-$id')),
+        matching: find.byType(StatusBadge),
+      );
+
+      expect(
+        find.descendant(of: badgeDi(lewat), matching: find.text('Terlambat')),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(of: badgeDi(besok), matching: find.text('H-1')),
+        findsOneWidget,
+      );
+      Color? warna(int id) {
+        final kotak = tester.widget<Container>(
+          find.descendant(of: badgeDi(id), matching: find.byType(Container)),
+        );
+        return (kotak.decoration! as BoxDecoration).color;
+      }
+
+      expect(warna(lewat), AppBranding.dangerRed);
+      expect(warna(besok), AppBranding.warnOrange);
+      expect(badgeDi(lewatSelesai), findsNothing);
+      expect(badgeDi(besokSelesai), findsNothing);
+      expect(badgeDi(jauh), findsNothing);
       await tutupDb(tester, db);
     });
   });
