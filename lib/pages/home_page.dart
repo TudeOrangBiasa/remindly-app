@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:remindly_app/database/app_database.dart';
 import 'package:remindly_app/database/tugas_repo.dart';
 import 'package:remindly_app/models/tugas.dart';
+import 'package:remindly_app/pages/course_detail_page.dart';
 import 'package:remindly_app/pages/task_form_page.dart';
 import 'package:remindly_app/theme/tokens.dart';
 import 'package:remindly_app/widgets/empty_state.dart';
@@ -111,16 +112,31 @@ class _HomePageState extends State<HomePage> {
                 )
               else
                 for (final t in data.terdekat)
-                  ListTile(
-                    key: Key('beranda-${t.id}'),
-                    contentPadding: EdgeInsets.zero,
-                    title: Text(t.judul),
-                    subtitle: Text(_tampil(t.deadline)),
-                    trailing: t.isTerlambat(sekarang)
-                        ? const StatusBadge.terlambat()
-                        : t.isHampir(sekarang)
-                        ? const StatusBadge.hampir()
-                        : null,
+                  Semantics(
+                    identifier: 'beranda-${t.id}',
+                    container: true,
+                    explicitChildNodes: true,
+                    child: ListTile(
+                      key: Key('beranda-${t.id}'),
+                      contentPadding: EdgeInsets.zero,
+                      title: Text(t.judul),
+                      subtitle: Text(_tampil(t.deadline)),
+                      trailing: t.isTerlambat(sekarang)
+                          ? const StatusBadge.terlambat()
+                          : t.isHampir(sekarang)
+                          ? const StatusBadge.hampir()
+                          : null,
+                      onTap: () async {
+                        final db = await _db;
+                        if (!context.mounted) return;
+                        Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (_) =>
+                                CourseDetailPage(courseId: t.matkulId, db: db),
+                          ),
+                        );
+                      },
+                    ),
                   ),
             ],
           );
