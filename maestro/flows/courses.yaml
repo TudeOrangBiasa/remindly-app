@@ -1,0 +1,28 @@
+appId: com.remindly.app.remindly_app
+---
+- launchApp
+- extendedWaitUntil:
+    visible: Beranda
+    timeout: 60000
+- tapOn: Matkul.*
+- extendedWaitUntil:
+    visible:
+      id: halaman-matkul
+    timeout: 60000
+- assertVisible: Mata Kuliah
+- assertVisible: Belum ada mata kuliah.*
+- tapOn:
+    id: tambah-matkul
+- assertVisible: Mata kuliah baru
+- tapOn: Nama
+- inputText: Fisika
+- tapOn: Simpan
+- assertVisible:
+    id: baris-matkul-1
+- tapOn:
+    id: tambah-matkul
+- assertVisible: Mata kuliah baru
+- tapOn: Nama
+- inputText: fisika
+- tapOn: Simpan
+- assertVisible: Nama sudah ada
