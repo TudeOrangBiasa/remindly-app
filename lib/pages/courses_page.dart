@@ -35,17 +35,17 @@ class _CoursesPageState extends State<CoursesPage> {
     });
   }
 
-  Future<void> _bukaForm(List<MataKuliah> ada) async {
+  Future<void> _bukaForm(List<MataKuliah> ada, [MataKuliah? lama]) async {
     final db = await _db;
     if (!mounted) return;
-    final nama = TextEditingController();
-    final dosen = TextEditingController();
-    final hari = TextEditingController();
+    final nama = TextEditingController(text: lama?.nama);
+    final dosen = TextEditingController(text: lama?.dosen);
+    final hari = TextEditingController(text: lama?.hari);
     final kunci = GlobalKey<FormState>();
     final simpan = await showDialog<bool>(
       context: context,
       builder: (dialog) => AlertDialog(
-        title: const Text('Mata kuliah baru'),
+        title: Text(lama == null ? 'Mata kuliah baru' : 'Ubah mata kuliah'),
         content: Form(
           key: kunci,
           child: Column(
@@ -58,7 +58,9 @@ class _CoursesPageState extends State<CoursesPage> {
                   final teks = (nilai ?? '').trim();
                   if (teks.isEmpty) return 'Nama wajib diisi';
                   final dobel = ada.any(
-                    (m) => m.namaTrim.toLowerCase() == teks.toLowerCase(),
+                    (m) =>
+                        m.id != lama?.id &&
+                        m.namaTrim.toLowerCase() == teks.toLowerCase(),
                   );
                   if (dobel) return 'Nama sudah ada';
                   return null;
@@ -83,13 +85,14 @@ class _CoursesPageState extends State<CoursesPage> {
           FilledButton(
             onPressed: () async {
               if (kunci.currentState!.validate()) {
-                await MataKuliahRepository(db).tambah(
-                  MataKuliah(
-                    nama: nama.text,
-                    dosen: dosen.text,
-                    hari: hari.text,
-                  ),
+                final repo = MataKuliahRepository(db);
+                final isi = MataKuliah(
+                  id: lama?.id,
+                  nama: nama.text,
+                  dosen: dosen.text,
+                  hari: hari.text,
                 );
+                await (lama == null ? repo.tambah(isi) : repo.ubah(isi));
                 if (dialog.mounted) Navigator.of(dialog).pop(true);
               }
             },
@@ -99,6 +102,43 @@ class _CoursesPageState extends State<CoursesPage> {
       ),
     );
     if (simpan == true) unawaited(_muat());
+  }
+
+  Future<void> _hapus(MataKuliah matkul) async {
+    final yakin = await showDialog<bool>(
+      context: context,
+      builder: (dialog) => AlertDialog(
+        title: const Text('Hapus mata kuliah?'),
+        content: Text('${matkul.nama} akan dihapus permanen.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialog).pop(false),
+            child: const Text('Batal'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(dialog).pop(true),
+            child: const Text('Hapus'),
+          ),
+        ],
+      ),
+    );
+    if (yakin != true) return;
+    final db = await _db;
+    try {
+      await MataKuliahRepository(db).hapus(matkul.id!);
+    } on MatkulHasTugasException catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Tidak bisa dihapus, masih ada ${e.jumlah} tugas di '
+            '${matkul.nama}.',
+          ),
+        ),
+      );
+      return;
+    }
+    unawaited(_muat());
   }
 
   @override
@@ -132,11 +172,22 @@ class _CoursesPageState extends State<CoursesPage> {
                         child: ListTile(
                           key: Key('matkul-${m.id}'),
                           title: Text(m.nama),
+                          onTap: () => _bukaForm(data, m),
                           subtitle: Text(
                             [
                               m.dosen,
                               m.hari,
                             ].where((s) => s.trim().isNotEmpty).join(' · '),
+                          ),
+                          trailing: Semantics(
+                            identifier: 'hapus-matkul-${m.id}',
+                            container: true,
+                            explicitChildNodes: true,
+                            child: IconButton(
+                              tooltip: 'Hapus ${m.nama}',
+                              icon: const Icon(Icons.delete_outline),
+                              onPressed: () => _hapus(m),
+                            ),
                           ),
                         ),
                       ),
