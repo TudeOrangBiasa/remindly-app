@@ -17,6 +17,12 @@ class _RemindlyAppState extends State<RemindlyApp> {
 
   static const _pages = <Widget>[HomePage(), TaskListPage(), CoursesPage()];
 
+  static const _pageIds = <String>[
+    'halaman-beranda',
+    'halaman-tugas',
+    'halaman-matkul',
+  ];
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -24,7 +30,12 @@ class _RemindlyAppState extends State<RemindlyApp> {
       theme: AppTheme.light(),
       darkTheme: AppTheme.dark(),
       home: Scaffold(
-        body: _pages[_index],
+        body: Semantics(
+          identifier: _pageIds[_index],
+          container: true,
+          explicitChildNodes: true,
+          child: _pages[_index],
+        ),
         bottomNavigationBar: NavigationBar(
           selectedIndex: _index,
           onDestinationSelected: (i) => setState(() => _index = i),
