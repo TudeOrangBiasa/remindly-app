@@ -35,17 +35,17 @@ class _CoursesPageState extends State<CoursesPage> {
     });
   }
 
-  Future<void> _bukaForm(List<MataKuliah> ada) async {
+  Future<void> _bukaForm(List<MataKuliah> ada, {MataKuliah? awal}) async {
     final db = await _db;
     if (!mounted) return;
-    final nama = TextEditingController();
-    final dosen = TextEditingController();
-    final hari = TextEditingController();
+    final nama = TextEditingController(text: awal?.nama ?? '');
+    final dosen = TextEditingController(text: awal?.dosen ?? '');
+    final hari = TextEditingController(text: awal?.hari ?? '');
     final kunci = GlobalKey<FormState>();
     final simpan = await showDialog<bool>(
       context: context,
       builder: (dialog) => AlertDialog(
-        title: const Text('Mata kuliah baru'),
+        title: Text(awal == null ? 'Mata kuliah baru' : 'Ubah mata kuliah'),
         content: Form(
           key: kunci,
           child: Column(
@@ -58,7 +58,9 @@ class _CoursesPageState extends State<CoursesPage> {
                   final teks = (nilai ?? '').trim();
                   if (teks.isEmpty) return 'Nama wajib diisi';
                   final dobel = ada.any(
-                    (m) => m.namaTrim.toLowerCase() == teks.toLowerCase(),
+                    (m) =>
+                        m.id != awal?.id &&
+                        m.namaTrim.toLowerCase() == teks.toLowerCase(),
                   );
                   if (dobel) return 'Nama sudah ada';
                   return null;
@@ -83,13 +85,25 @@ class _CoursesPageState extends State<CoursesPage> {
           FilledButton(
             onPressed: () async {
               if (kunci.currentState!.validate()) {
-                await MataKuliahRepository(db).tambah(
-                  MataKuliah(
-                    nama: nama.text,
-                    dosen: dosen.text,
-                    hari: hari.text,
-                  ),
-                );
+                final repo = MataKuliahRepository(db);
+                if (awal == null) {
+                  await repo.tambah(
+                    MataKuliah(
+                      nama: nama.text,
+                      dosen: dosen.text,
+                      hari: hari.text,
+                    ),
+                  );
+                } else {
+                  await repo.ubah(
+                    MataKuliah(
+                      id: awal.id,
+                      nama: nama.text,
+                      dosen: dosen.text,
+                      hari: hari.text,
+                    ),
+                  );
+                }
                 if (dialog.mounted) Navigator.of(dialog).pop(true);
               }
             },
@@ -99,6 +113,51 @@ class _CoursesPageState extends State<CoursesPage> {
       ),
     );
     if (simpan == true) unawaited(_muat());
+  }
+
+  Future<void> _hapus(MataKuliah matkul) async {
+    final db = await _db;
+    if (!mounted) return;
+    final yakin = await showDialog<bool>(
+      context: context,
+      builder: (dialog) => AlertDialog(
+        title: Text('Hapus ${matkul.nama}?'),
+        content: const Text(
+          'Mata kuliah yang masih punya tugas tidak bisa dihapus.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialog).pop(false),
+            child: const Text('Batal'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(dialog).pop(true),
+            child: const Text('Hapus'),
+          ),
+        ],
+      ),
+    );
+    if (yakin != true || !mounted) return;
+    try {
+      await MataKuliahRepository(db).hapus(matkul.id!);
+    } on MatkulHasTugasException catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Tidak bisa hapus: masih ada ${e.jumlah} tugas di ${matkul.nama}',
+          ),
+        ),
+      );
+      return;
+    }
+    unawaited(_muat());
+  }
+
+  Future<void> _tambahBaru() async {
+    final db = await _db;
+    if (!mounted) return;
+    unawaited(MataKuliahRepository(db).semua().then(_bukaForm));
   }
 
   @override
@@ -138,6 +197,17 @@ class _CoursesPageState extends State<CoursesPage> {
                               m.hari,
                             ].where((s) => s.trim().isNotEmpty).join(' · '),
                           ),
+                          onTap: () => _bukaForm(data, awal: m),
+                          trailing: Semantics(
+                            identifier: 'hapus-matkul-${m.id}',
+                            container: true,
+                            explicitChildNodes: true,
+                            child: IconButton(
+                              tooltip: 'Hapus ${m.nama}',
+                              icon: const Icon(Icons.delete_outlined),
+                              onPressed: () => _hapus(m),
+                            ),
+                          ),
                         ),
                       ),
                   ],
@@ -150,11 +220,7 @@ class _CoursesPageState extends State<CoursesPage> {
         explicitChildNodes: true,
         child: FloatingActionButton(
           tooltip: 'Tambah mata kuliah',
-          onPressed: () async {
-            final db = await _db;
-            if (!mounted) return;
-            unawaited(MataKuliahRepository(db).semua().then(_bukaForm));
-          },
+          onPressed: _tambahBaru,
           child: const Icon(Icons.add),
         ),
       ),

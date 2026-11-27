@@ -30,3 +30,17 @@ appId: com.remindly.app.remindly_app
 - inputText: fisika
 - tapOn: Simpan
 - assertVisible: Nama sudah ada
+- tapOn: Batal
+- tapOn:
+    id: baris-matkul-1
+- assertVisible: Ubah mata kuliah
+- tapOn: Nama
+- inputText: ' Dasar'
+- tapOn: Simpan
+- assertVisible:
+    id: baris-matkul-1
+- tapOn:
+    id: hapus-matkul-1
+- assertVisible: Hapus Fisika Dasar?
+- tapOn: Hapus
+- assertVisible: Belum ada mata kuliah.*
