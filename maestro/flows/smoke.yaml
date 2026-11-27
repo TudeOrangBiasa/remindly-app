@@ -10,6 +10,10 @@ appId: com.remindly.app.remindly_app
 - assertVisible:
     id: halaman-tugas
 - assertVisible: Belum ada tugas.*
+- tapOn: Tambah tugas
+- assertVisible: Tambah Tugas
+- back
+- assertVisible: Belum ada tugas.*
 - tapOn: Matkul.*
 - assertVisible:
     id: halaman-matkul

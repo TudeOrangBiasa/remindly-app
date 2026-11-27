@@ -46,6 +46,17 @@ class _TaskListPageState extends State<TaskListPage> {
     if (simpan == true) unawaited(_muat());
   }
 
+  Future<void> _ubah(Tugas tugas) async {
+    final db = await _db;
+    if (!mounted) return;
+    final simpan = await Navigator.of(context).push<bool>(
+      MaterialPageRoute<bool>(
+        builder: (_) => TaskFormPage(db: db, awal: tugas),
+      ),
+    );
+    if (simpan == true) unawaited(_muat());
+  }
+
   Future<void> _toggle(Tugas tugas) async {
     final db = await _db;
     if (!mounted) return;
@@ -88,6 +99,7 @@ class _TaskListPageState extends State<TaskListPage> {
                       ),
                       title: Text(t.judul),
                       subtitle: Text(_tampil(t.deadline)),
+                      onTap: () => _ubah(t),
                     );
                   },
                 );
