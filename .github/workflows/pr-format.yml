@@ -16,7 +16,7 @@ jobs:
             const title = pr.title || '';
             const body = pr.body || '';
             const labels = (pr.labels || []).map(l => l.name.toLowerCase());
-            const titleOk = /^\[(REM-[0-9]+|CHORE|DOCS)\]|^(chore|docs|feat|fix)(\(.+\))?:\s+\S/i.test(title) || /^\[REM-[0-9]+\]/i.test(title);
+            const titleOk = /^\[(REM-[0-9]+[a-z]?|CHORE|DOCS)\]|^(chore|docs|feat|fix)(\(.+\))?:\s+\S/i.test(title);
             if (!titleOk) {
               core.setFailed(`Judul PR wajib diawali tag contoh [REM-12], [CHORE], [DOCS], atau chore:, docs:, feat:, fix:. Dapat: ${title}`);
               return;

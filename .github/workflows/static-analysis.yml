@@ -56,3 +56,17 @@ jobs:
           flutter --version
           dart format --set-exit-if-changed .
           flutter analyze --fatal-infos --fatal-warnings
+      - name: Contract tests hijau
+        if: hashFiles('pubspec.yaml') != ''
+        run: flutter test
+      - name: Gate tanpa komentar di baris baru
+        if: github.event_name == 'pull_request'
+        run: |
+          git fetch origin ${{ github.event.pull_request.base.sha }} --depth=1
+          if git diff --unified=0 FETCH_HEAD...HEAD -- \
+            ':(glob)lib/**/*.dart' ':(glob)test/**/*.dart' |
+            grep -E '^\+\s*(//|/\*)'; then
+            echo 'hapus komentar full-line di baris baru lib/ dan test/'
+            exit 1
+          fi
+          echo 'no-comments ok'

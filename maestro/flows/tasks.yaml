@@ -1,0 +1,18 @@
+appId: com.remindly.app.remindly_app
+---
+- launchApp
+- extendedWaitUntil:
+    visible: Beranda
+    timeout: 60000
+- tapOn: Tugas.*
+- assertVisible: Belum ada tugas.*
+- tapOn: Tambah tugas
+- assertVisible: Tambah Tugas
+- tapOn: Mata kuliah
+- tapOn: Matematika
+- tapOn: Judul
+- inputText: PR 1
+- tapOn: Batas waktu
+- tapOn: OK
+- tapOn: Simpan
+- assertVisible: PR 1
