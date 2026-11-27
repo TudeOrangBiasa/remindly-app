@@ -110,7 +110,12 @@ class _TaskListPageState extends State<TaskListPage> {
     final daftar = _daftar;
     return Scaffold(
       appBar: AppBar(title: const Text('Tugas')),
-      body: Column(children: [_barisFilter(), Expanded(child: _isi(daftar))]),
+      body: Column(
+        children: [
+          _barisFilter(),
+          Expanded(child: _isi(daftar)),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         tooltip: 'Tambah tugas',
         onPressed: _bukaForm,
