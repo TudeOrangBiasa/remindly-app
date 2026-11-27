@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:remindly_app/database/app_database.dart';
 import 'package:remindly_app/database/mata_kuliah_repo.dart';
 import 'package:remindly_app/database/tugas_repo.dart';
 import 'package:remindly_app/models/mata_kuliah.dart';
@@ -8,47 +7,7 @@ import 'package:remindly_app/models/tugas.dart';
 import 'package:remindly_app/pages/task_form_page.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-Future<Database> bukaDb(
-  WidgetTester tester, [
-  List<String> nama = const [],
-]) async {
-  late Database db;
-  await tester.runAsync(() async {
-    db = await openDatabase(
-      inMemoryDatabasePath,
-      version: AppDatabase.version,
-      onConfigure: AppDatabase.onConfigure,
-      onCreate: AppDatabase.onCreate,
-      onUpgrade: AppDatabase.onUpgrade,
-    );
-    final repo = MataKuliahRepository(db);
-    for (final n in nama) {
-      await repo.tambah(MataKuliah(nama: n));
-    }
-  });
-  return db;
-}
-
-Future<void> biarDbSelesai(WidgetTester tester) async {
-  await tester.runAsync(() async {
-    await Future<void>.delayed(const Duration(milliseconds: 200));
-  });
-  await tester.pump();
-}
-
-Future<void> tutupDb(WidgetTester tester, Database db) async {
-  await tester.runAsync(() async {
-    await db.close();
-  });
-}
-
-Future<T> bacaDb<T>(WidgetTester tester, Future<T> Function() kerja) async {
-  late T hasil;
-  await tester.runAsync(() async {
-    hasil = await kerja();
-  });
-  return hasil;
-}
+import 'test_helpers.dart';
 
 Future<void> pumpForm(WidgetTester tester, Database db, {Tugas? awal}) async {
   await tester.pumpWidget(
@@ -68,7 +27,13 @@ void main() {
 
   group('Form tugas REM-05a', () {
     testWidgets('simpan tugas valid', (tester) async {
-      final db = await bukaDb(tester, const ['Matematika']);
+      final db = await bukaDb(tester);
+      await bacaDb(
+        tester,
+        () =>
+            MataKuliahRepository(db)
+                .tambah(const MataKuliah(nama: 'Matematika')),
+      );
       await pumpForm(tester, db);
 
       await tester.tap(find.byKey(const Key('matkul')));
@@ -98,7 +63,11 @@ void main() {
     });
 
     testWidgets('judul kosong ditolak', (tester) async {
-      final db = await bukaDb(tester, const ['Fisika']);
+      final db = await bukaDb(tester);
+      await bacaDb(
+        tester,
+        () => MataKuliahRepository(db).tambah(const MataKuliah(nama: 'Fisika')),
+      );
       await pumpForm(tester, db);
 
       await tester.tap(find.byKey(const Key('simpan')));
@@ -125,19 +94,19 @@ void main() {
     });
 
     testWidgets('ubah prefill dan simpan', (tester) async {
-      final db = await bukaDb(tester, const ['Kimia']);
-      final tugasRepo = TugasRepository(db);
+      final db = await bukaDb(tester);
       final matkul = await bacaDb(
         tester,
-        () => MataKuliahRepository(db).semua(),
-      ).then((daftar) => daftar.single.id!);
+        () => MataKuliahRepository(db).tambah(const MataKuliah(nama: 'Kimia')),
+      );
+      final tugasRepo = TugasRepository(db);
       final besok = DateTime.now().add(const Duration(days: 1));
-      late int id;
-      await tester.runAsync(() async {
-        id = await tugasRepo.tambah(
+      final id = await bacaDb(
+        tester,
+        () => tugasRepo.tambah(
           Tugas(matkulId: matkul, judul: 'PR lama', deadline: besok),
-        );
-      });
+        ),
+      );
       final awal = await bacaDb(tester, () => tugasRepo.perId(id));
 
       await pumpForm(tester, db, awal: awal);
