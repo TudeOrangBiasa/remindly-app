@@ -141,21 +141,25 @@ class _Angka extends StatelessWidget {
   final String kunci;
   final String label;
   final int nilai;
-
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(AppTokens.spaceM),
-        child: Column(
-          children: [
-            Text(
-              '$nilai',
-              key: Key(kunci),
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            Text(label),
-          ],
+    return Semantics(
+      identifier: kunci,
+      container: true,
+      explicitChildNodes: true,
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(AppTokens.spaceM),
+          child: Column(
+            children: [
+              Text(
+                '$nilai',
+                key: Key(kunci),
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
+              Text(label),
+            ],
+          ),
         ),
       ),
     );
