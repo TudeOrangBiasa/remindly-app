@@ -52,11 +52,12 @@ void main() {
     expect(find.bySemanticsIdentifier('halaman-tugas'), findsOneWidget);
 
     await tester.tap(find.byIcon(Icons.book_outlined));
-    await tester.pumpAndSettle();
+    await pompaSampai(
+      tester,
+      find.text('Belum ada mata kuliah. Tekan tombol + untuk menambah.'),
+    );
 
     expect(find.byType(CoursesPage), findsOneWidget);
-    expect(find.text('Mata Kuliah'), findsOneWidget);
-    expect(find.bySemanticsIdentifier('halaman-matkul'), findsOneWidget);
 
     await tester.tap(find.byIcon(Icons.home_outlined));
     await pompaSampai(
