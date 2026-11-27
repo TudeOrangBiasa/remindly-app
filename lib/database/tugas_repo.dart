@@ -40,6 +40,16 @@ class TugasRepository {
     );
   }
 
+  Future<List<Tugas>> daftarPerMatkul(int matkulId) async {
+    final rows = await db.query(
+      AppDatabase.tugasTable,
+      where: 'matkul_id = ?',
+      whereArgs: <Object?>[matkulId],
+      orderBy: 'deadline ASC, id ASC',
+    );
+    return rows.map(Tugas.fromMap).toList();
+  }
+
   Future<List<Tugas>> daftar(FilterTugas filter, {DateTime? sekarang}) async {
     final where = <String>[];
     final args = <Object?>[];

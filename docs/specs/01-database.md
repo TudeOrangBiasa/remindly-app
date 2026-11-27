@@ -15,6 +15,7 @@ Acuan SRS 2.3 dan 4.3. Fondasi paling berisiko, kerjakan pertama.
 3. Deadline tidak boleh lewat saat create dan update, bandingkan tanggal kalender bukan jam.
 4. Hapus matkul dengan tugas aktif ditolak dengan pesan alasan, jangan cascade.
 5. Hapus tugas dan matkul kosong wajib konfirmasi di UI, di layer DB sediakan delete eksplisit.
+6. Query per matkul untuk halaman detail: `daftarPerMatkul(matkulId)` urut deadline menaik, pakai index `tugas(matkul_id, deadline)`.
 
 ## Migrasi
 
