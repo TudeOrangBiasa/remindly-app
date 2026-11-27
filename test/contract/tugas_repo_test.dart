@@ -109,6 +109,22 @@ void main() {
       await db.close();
     });
 
+    test('daftarPerMatkul hanya miliknya urut deadline', () async {
+      final db = await openRepoDb();
+      final repo = TugasRepository(db);
+      final fisika = await tambahMatkul(db, 'Fisika');
+      final kimia = await tambahMatkul(db, 'Kimia');
+
+      await tanamTugas(db, fisika, 'Belakang', DateTime(2026, 5, 20));
+      await tanamTugas(db, kimia, 'Kimia 1', DateTime(2026, 5, 9));
+      await tanamTugas(db, fisika, 'Depan', DateTime(2026, 5, 9));
+
+      final daftar = await repo.daftarPerMatkul(fisika);
+      expect(daftar.map((t) => t.judul), <String>['Depan', 'Belakang']);
+      expect(await repo.daftarPerMatkul(kimia + 999), isEmpty);
+      await db.close();
+    });
+
     test('toggle selesai roundtrip', () async {
       final db = await openRepoDb();
       final repo = TugasRepository(db);
