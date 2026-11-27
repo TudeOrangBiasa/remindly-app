@@ -16,6 +16,10 @@ appId: com.remindly.app.remindly_app
 - assertVisible: Mata kuliah baru
 - tapOn: Nama
 - inputText: Fisika
+- tapOn: Dosen
+- inputText: Bu Ani
+- tapOn: Hari
+- inputText: Senin
 - tapOn: Simpan
 - assertVisible:
     id: baris-matkul-1
