@@ -24,8 +24,13 @@ void main() {
   }
 
   testWidgets('RemindlyApp tiga destinasi bergantian', (tester) async {
-    await tester.pumpWidget(const RemindlyApp());
-    await tester.pumpAndSettle();
+    await tester.runAsync(() async {
+      await tester.pumpWidget(const RemindlyApp());
+    });
+    await pompaSampai(
+      tester,
+      find.text('Belum ada tugas. Tekan tombol + untuk menambah.'),
+    );
 
     expect(find.byType(HomePage), findsOneWidget);
     expect(find.text('Beranda'), findsWidgets);
@@ -54,7 +59,10 @@ void main() {
     expect(find.bySemanticsIdentifier('halaman-matkul'), findsOneWidget);
 
     await tester.tap(find.byIcon(Icons.home_outlined));
-    await tester.pumpAndSettle();
+    await pompaSampai(
+      tester,
+      find.text('Belum ada tugas. Tekan tombol + untuk menambah.'),
+    );
 
     expect(find.byType(HomePage), findsOneWidget);
     expect(find.byType(CoursesPage), findsNothing);
