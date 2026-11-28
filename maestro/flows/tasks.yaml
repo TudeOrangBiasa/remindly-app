@@ -16,3 +16,15 @@ appId: com.remindly.app.remindly_app
 - tapOn: OK
 - tapOn: Simpan
 - assertVisible: Selesai PR 1
+- tapOn: Belum Selesai
+- assertVisible: PR 1
+- tapOn: Terlambat
+- assertVisible: Tidak ada tugas untuk filter ini.
+- tapOn: Semua
+- tapOn: Selesai PR 1
+- tapOn: Selesai
+- assertVisible: PR 1
+- tapOn: Belum Selesai
+- assertVisible: Tidak ada tugas untuk filter ini.
+- tapOn: Semua
+- assertVisible: PR 1
