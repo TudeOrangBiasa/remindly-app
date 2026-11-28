@@ -6,6 +6,7 @@ import 'package:remindly_app/database/mata_kuliah_repo.dart';
 import 'package:remindly_app/database/tugas_repo.dart';
 import 'package:remindly_app/models/mata_kuliah.dart';
 import 'package:remindly_app/models/tugas.dart';
+import 'package:remindly_app/theme/theme_mode_scope.dart';
 import 'package:remindly_app/widgets/empty_state.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -71,7 +72,10 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
   Widget build(BuildContext context) {
     final detail = _detail;
     return Scaffold(
-      appBar: AppBar(title: const Text('Detail Mata Kuliah')),
+      appBar: AppBar(
+        title: const Text('Detail Mata Kuliah'),
+        actions: const [ThemeModeButton()],
+      ),
       body: detail == null
           ? const Center(child: CircularProgressIndicator())
           : FutureBuilder<_Detail>(

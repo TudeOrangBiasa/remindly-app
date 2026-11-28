@@ -5,6 +5,7 @@ import 'package:remindly_app/database/tugas_repo.dart';
 import 'package:remindly_app/models/tugas.dart';
 import 'package:remindly_app/pages/course_detail_page.dart';
 import 'package:remindly_app/pages/task_form_page.dart';
+import 'package:remindly_app/theme/theme_mode_scope.dart';
 import 'package:remindly_app/theme/tokens.dart';
 import 'package:remindly_app/widgets/empty_state.dart';
 import 'package:remindly_app/widgets/status_badge.dart';
@@ -69,7 +70,10 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final sekarang = DateTime.now();
     return Scaffold(
-      appBar: AppBar(title: const Text('Beranda')),
+      appBar: AppBar(
+        title: const Text('Beranda'),
+        actions: const [ThemeModeButton()],
+      ),
       body: FutureBuilder<_Ringkas>(
         future: _muat(sekarang),
         builder: (context, snapshot) {

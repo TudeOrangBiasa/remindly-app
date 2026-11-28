@@ -4,6 +4,7 @@ import 'package:remindly_app/database/mata_kuliah_repo.dart';
 import 'package:remindly_app/database/tugas_repo.dart';
 import 'package:remindly_app/models/mata_kuliah.dart';
 import 'package:remindly_app/models/tugas.dart';
+import 'package:remindly_app/theme/theme_mode_scope.dart';
 import 'package:remindly_app/theme/tokens.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -109,7 +110,10 @@ class _TaskFormPageState extends State<TaskFormPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(_ubah ? 'Ubah Tugas' : 'Tambah Tugas')),
+      appBar: AppBar(
+        title: Text(_ubah ? 'Ubah Tugas' : 'Tambah Tugas'),
+        actions: const [ThemeModeButton()],
+      ),
       body: FutureBuilder<List<MataKuliah>>(
         future: MataKuliahRepository(widget.db).semua(),
         builder: (context, snapshot) {

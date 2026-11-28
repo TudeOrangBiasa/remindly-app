@@ -3,33 +3,32 @@ import 'package:remindly_app/theme/branding.dart';
 
 abstract final class AppTheme {
   static ThemeData light() {
-    final base = ThemeData.light(useMaterial3: true);
-    return base.copyWith(
-      colorScheme: const ColorScheme.light(
+    return _data(
+      const ColorScheme.light(
         primary: AppBranding.lightPrimary,
         surface: AppBranding.lightSurface,
         onSurface: AppBranding.lightOnSurface,
         error: AppBranding.dangerRed,
       ),
-      filledButtonTheme: FilledButtonThemeData(
-        style: FilledButton.styleFrom(
-          shape: const StadiumBorder(),
-          minimumSize: const Size(48, 48),
-        ),
-      ),
     );
   }
 
   static ThemeData dark() {
-    final base = ThemeData.dark(useMaterial3: true);
-    return base.copyWith(
-      colorScheme: const ColorScheme.dark(
+    return _data(
+      const ColorScheme.dark(
         primary: AppBranding.darkPrimary,
         onPrimary: AppBranding.darkOnPrimary,
         surface: AppBranding.darkSurface,
         onSurface: AppBranding.darkOnSurface,
         error: AppBranding.dangerRed,
       ),
+    );
+  }
+
+  static ThemeData _data(ColorScheme scheme) {
+    return ThemeData(
+      colorScheme: scheme,
+      useMaterial3: true,
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
           shape: const StadiumBorder(),
