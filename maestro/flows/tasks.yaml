@@ -28,3 +28,16 @@ appId: com.remindly.app.remindly_app
 - assertVisible: Tidak ada tugas untuk filter ini.
 - tapOn: Semua
 - assertVisible: PR 1
+- tapOn: Tambah tugas
+- tapOn: Mata kuliah
+- tapOn: Matematika
+- tapOn: Judul
+- inputText: PR 2
+- tapOn: Batas waktu
+- evalScript: ${output.besok = String(new Date(Date.now() + 86400000).getDate())}
+- tapOn: ${output.besok}
+- tapOn: OK
+- tapOn: Simpan
+- assertVisible: PR 2
+- assertVisible: H-1
+- takeScreenshot: badge-h1
