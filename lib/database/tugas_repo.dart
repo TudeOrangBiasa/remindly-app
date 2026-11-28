@@ -40,6 +40,14 @@ class TugasRepository {
     );
   }
 
+  Future<int> hapus(int id) async {
+    return await db.delete(
+      AppDatabase.tugasTable,
+      where: 'id = ?',
+      whereArgs: <Object?>[id],
+    );
+  }
+
   Future<List<Tugas>> daftarPerMatkul(int matkulId) async {
     final rows = await db.query(
       AppDatabase.tugasTable,
