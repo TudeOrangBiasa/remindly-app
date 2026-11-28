@@ -62,3 +62,12 @@ appId: com.remindly.app.remindly_app
 - assertVisible: PR 2.*
 - assertVisible: .*H-1
 - takeScreenshot: badge-h1
+- tapOn: Hapus PR 2
+- assertVisible: Hapus PR 2?
+- tapOn: Batal
+- assertVisible: PR 2.*
+- tapOn: Hapus PR 2
+- assertVisible: Hapus PR 2?
+- tapOn: Hapus
+- assertVisible: PR 1.*
+- takeScreenshot: hapus-tugas-konfirmasi
