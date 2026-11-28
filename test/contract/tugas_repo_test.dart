@@ -233,5 +233,22 @@ void main() {
       );
       await db.close();
     });
+
+    test('hapus menghapus baris dan lapor jumlah', () async {
+      final db = await openRepoDb();
+      final repo = TugasRepository(db);
+      final matkul = await tambahMatkul(db, 'Matematika');
+
+      final id = await repo.tambah(
+        Tugas(matkulId: matkul, judul: 'PR 1', deadline: DateTime(2026, 5, 11)),
+        sekarang: sekarang,
+      );
+      final kena = await repo.hapus(id);
+      expect(kena, 1);
+      expect(await repo.perId(id), isNull);
+      expect(await repo.daftar(FilterTugas.semua, sekarang: sekarang), isEmpty);
+      expect(await repo.hapus(999999), 0);
+      await db.close();
+    });
   });
 }
