@@ -1,0 +1,175 @@
+appId: com.remindly.app.remindly_app
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: halaman-beranda
+    timeout: 60000
+- evalScript: ${output.besok = String(new Date(Date.now() + 86400000).getDate())}
+- evalScript: ${output.besokBulanDepan = new Date(Date.now() + 86400000).getDate() === 1}
+- evalScript: ${output.kemarin = String(new Date(Date.now() - 86400000).getDate())}
+- evalScript: ${output.kemarinTampil = new Date().getDate() !== 1}
+
+- tapOn: Matkul.*
+- extendedWaitUntil:
+    visible:
+      id: halaman-matkul
+    timeout: 60000
+- tapOn:
+    id: tambah-matkul
+- assertVisible: Mata kuliah baru
+- tapOn: Nama
+- runFlow:
+    when:
+      visible: Try out your stylus
+    commands:
+      - tapOn: Cancel
+- inputText: Matematika
+- tapOn: Simpan
+- extendedWaitUntil:
+    visible:
+      id: baris-matkul-1
+    timeout: 60000
+- tapOn:
+    id: tambah-matkul
+- tapOn: Nama
+- runFlow:
+    when:
+      visible: Try out your stylus
+    commands:
+      - tapOn: Cancel
+- inputText: Matematika
+- tapOn: Simpan
+- assertVisible: Nama sudah ada
+- takeScreenshot: 01-matkul-duplikat-ditolak
+- tapOn: Batal
+
+- tapOn: Tugas.*
+- extendedWaitUntil:
+    visible:
+      id: halaman-tugas
+    timeout: 60000
+- tapOn: Tambah tugas
+- assertVisible: Tambah Tugas
+- tapOn: Mata kuliah
+- tapOn: Matematika
+- tapOn: Batas waktu
+- tapOn: OK
+- tapOn: Simpan
+- assertVisible: Judul wajib diisi.
+- takeScreenshot: 02a-judul-kosong-ditolak
+- tapOn: Batas waktu
+- runFlow:
+    when:
+      true: ${output.kemarinTampil}
+    commands:
+      - assertVisible:
+          text: ${output.kemarin},.*
+          enabled: false
+      - takeScreenshot: 02b-deadline-kemarin-tidak-bisa-dipilih
+- runFlow:
+    when:
+      true: ${output.besokBulanDepan}
+    commands:
+      - tapOn: Next month
+- tapOn: ${output.besok},.*
+- tapOn: OK
+- tapOn: 'Judul(, .*)?'
+- inputText: PR 1
+- tapOn: Tinggi
+- tapOn: Simpan
+- assertVisible: Selesai PR 1
+
+- tapOn: Tambah tugas
+- tapOn: Mata kuliah
+- tapOn: Matematika
+- tapOn: Judul
+- inputText: PR 2
+- tapOn: Batas waktu
+- tapOn: OK
+- tapOn: Simpan
+- assertVisible: Selesai PR 2
+
+- tapOn: Selesai PR 2
+- assertVisible:
+    text: Selesai PR 2
+    checked: true
+- tapOn: Beranda.*
+- tapOn: Tugas.*
+- assertVisible:
+    text: Selesai PR 2
+    checked: true
+- takeScreenshot: 03-selesai-tetap-tercentang
+
+- assertVisible:
+    text: PR 2.*
+    above: PR 1.*
+- tapOn: Belum Selesai
+- assertVisible: PR 1.*
+- assertNotVisible: PR 2.*
+- tapOn: Selesai
+- assertVisible: PR 2.*
+- assertNotVisible: PR 1.*
+- tapOn: Terlambat
+- assertVisible: Tidak ada tugas untuk filter ini.
+- takeScreenshot: 04-filter-terlambat
+- tapOn: Semua
+
+- assertVisible: .*H-1
+- takeScreenshot: 05-badge-h1-oranye
+
+- tapOn: Beranda.*
+- tapOn:
+    id: beranda-1
+- assertVisible: Detail Mata Kuliah
+- assertVisible: 1 dari 2 tugas selesai
+- takeScreenshot: 06-detail-hitungan-selesai
+- back
+
+- tapOn: Matkul.*
+- tapOn:
+    id: hapus-matkul-1
+- assertVisible: Hapus Matematika?
+- tapOn: Hapus
+- assertVisible: 'Tidak bisa hapus: masih ada 2 tugas di Matematika'
+- takeScreenshot: 07a-hapus-bertugas-ditolak
+- tapOn:
+    id: tambah-matkul
+- tapOn: Nama
+- runFlow:
+    when:
+      visible: Try out your stylus
+    commands:
+      - tapOn: Cancel
+- inputText: Fisika
+- tapOn: Simpan
+- extendedWaitUntil:
+    visible:
+      id: baris-matkul-2
+    timeout: 60000
+- tapOn:
+    id: hapus-matkul-2
+- assertVisible: Hapus Fisika?
+- takeScreenshot: 07b-hapus-kosong-minta-konfirmasi
+- tapOn: Batal
+- assertVisible:
+    id: baris-matkul-2
+- tapOn:
+    id: hapus-matkul-2
+- tapOn: Hapus
+- assertNotVisible:
+    id: baris-matkul-2
+
+- stopApp
+- launchApp
+- extendedWaitUntil:
+    visible:
+      id: halaman-beranda
+    timeout: 60000
+- tapOn: Tugas.*
+- assertVisible: PR 1.*
+- assertVisible:
+    text: Selesai PR 2
+    checked: true
+- takeScreenshot: 08-data-tetap-ada

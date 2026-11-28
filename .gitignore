@@ -22,3 +22,5 @@ android/local.properties
 
 # FVM Version Cache
 .fvm/
+
+/*.png
