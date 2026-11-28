@@ -1,6 +1,7 @@
 appId: com.remindly.app.remindly_app
 ---
-- launchApp
+- launchApp:
+    clearState: true
 - extendedWaitUntil:
     visible: Beranda
     timeout: 60000

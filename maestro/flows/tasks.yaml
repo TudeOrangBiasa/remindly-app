@@ -1,8 +1,29 @@
 appId: com.remindly.app.remindly_app
 ---
-- launchApp
+- launchApp:
+    clearState: true
 - extendedWaitUntil:
     visible: Beranda
+    timeout: 60000
+- tapOn: Matkul.*
+- extendedWaitUntil:
+    visible:
+      id: halaman-matkul
+    timeout: 60000
+- tapOn:
+    id: tambah-matkul
+- assertVisible: Mata kuliah baru
+- tapOn: Nama
+- runFlow:
+    when:
+      visible: Try out your stylus
+    commands:
+      - tapOn: Cancel
+- inputText: Matematika
+- tapOn: Simpan
+- extendedWaitUntil:
+    visible:
+      id: baris-matkul-1
     timeout: 60000
 - tapOn: Tugas.*
 - assertVisible: Belum ada tugas.*
@@ -17,17 +38,17 @@ appId: com.remindly.app.remindly_app
 - tapOn: Simpan
 - assertVisible: Selesai PR 1
 - tapOn: Belum Selesai
-- assertVisible: PR 1
+- assertVisible: PR 1.*
 - tapOn: Terlambat
 - assertVisible: Tidak ada tugas untuk filter ini.
 - tapOn: Semua
 - tapOn: Selesai PR 1
 - tapOn: Selesai
-- assertVisible: PR 1
+- assertVisible: PR 1.*
 - tapOn: Belum Selesai
 - assertVisible: Tidak ada tugas untuk filter ini.
 - tapOn: Semua
-- assertVisible: PR 1
+- assertVisible: PR 1.*
 - tapOn: Tambah tugas
 - tapOn: Mata kuliah
 - tapOn: Matematika
@@ -35,9 +56,9 @@ appId: com.remindly.app.remindly_app
 - inputText: PR 2
 - tapOn: Batas waktu
 - evalScript: ${output.besok = String(new Date(Date.now() + 86400000).getDate())}
-- tapOn: ${output.besok}
+- tapOn: ${output.besok},.*
 - tapOn: OK
 - tapOn: Simpan
-- assertVisible: PR 2
-- assertVisible: H-1
+- assertVisible: PR 2.*
+- assertVisible: .*H-1
 - takeScreenshot: badge-h1

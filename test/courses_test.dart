@@ -34,13 +34,21 @@ void main() {
     if (hari.isNotEmpty) {
       await tester.enterText(find.widgetWithText(TextFormField, 'Hari'), hari);
     }
-    await tester.tap(find.text('Simpan'));
-    await tester.pump();
-    await biarDbSelesai(tester);
+    final simpan = find.text('Simpan');
+    await tester.ensureVisible(simpan);
+    await tester.tap(simpan);
+    for (var i = 0; i < 25; i++) {
+      await biarDbSelesai(tester);
+      await tester.pump();
+      final dialogTutup =
+          find.text('Mata kuliah baru').evaluate().isEmpty &&
+          find.text('Ubah mata kuliah').evaluate().isEmpty;
+      final tolak =
+          find.text('Nama sudah ada').evaluate().isNotEmpty ||
+          find.text('Nama wajib diisi').evaluate().isNotEmpty;
+      if (dialogTutup || tolak) break;
+    }
     await tester.pumpAndSettle();
-    await biarDbSelesai(tester);
-    await tester.pump();
-    await tester.pump();
   }
 
   group('CoursesPage tambah', () {
