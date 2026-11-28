@@ -6,6 +6,7 @@ import 'package:remindly_app/database/app_database.dart';
 import 'package:remindly_app/database/tugas_repo.dart';
 import 'package:remindly_app/models/tugas.dart';
 import 'package:remindly_app/pages/task_form_page.dart';
+import 'package:remindly_app/theme/theme_mode_scope.dart';
 import 'package:remindly_app/theme/tokens.dart';
 import 'package:remindly_app/widgets/empty_state.dart';
 import 'package:remindly_app/widgets/status_badge.dart';
@@ -110,7 +111,10 @@ class _TaskListPageState extends State<TaskListPage> {
   Widget build(BuildContext context) {
     final daftar = _daftar;
     return Scaffold(
-      appBar: AppBar(title: const Text('Tugas')),
+      appBar: AppBar(
+        title: const Text('Tugas'),
+        actions: const [ThemeModeButton()],
+      ),
       body: Column(
         children: [
           _barisFilter(),
