@@ -75,6 +75,31 @@ class _TaskListPageState extends State<TaskListPage> {
     unawaited(_muat());
   }
 
+  Future<void> _hapus(Tugas tugas) async {
+    final db = await _db;
+    if (!mounted) return;
+    final yakin = await showDialog<bool>(
+      context: context,
+      builder: (dialog) => AlertDialog(
+        title: Text('Hapus ${tugas.judul}?'),
+        content: const Text('Tugas yang dihapus tidak bisa dikembalikan.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialog).pop(false),
+            child: const Text('Batal'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(dialog).pop(true),
+            child: const Text('Hapus'),
+          ),
+        ],
+      ),
+    );
+    if (yakin != true || !mounted) return;
+    await TugasRepository(db).hapus(tugas.id!);
+    unawaited(_muat());
+  }
+
   void _pilihFilter(FilterTugas filter) {
     if (filter == _filter) return;
     _filter = filter;
@@ -163,11 +188,24 @@ class _TaskListPageState extends State<TaskListPage> {
               ),
               title: Text(t.judul),
               subtitle: Text(_tampil(t.deadline)),
-              trailing: t.isTerlambat(sekarang)
-                  ? const StatusBadge.terlambat()
-                  : t.isHampir(sekarang)
-                  ? const StatusBadge.hampir()
-                  : null,
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (t.isTerlambat(sekarang)) const StatusBadge.terlambat(),
+                  if (!t.isTerlambat(sekarang) && t.isHampir(sekarang))
+                    const StatusBadge.hampir(),
+                  Semantics(
+                    identifier: 'hapus-tugas-${t.id}',
+                    container: true,
+                    explicitChildNodes: true,
+                    child: IconButton(
+                      tooltip: 'Hapus ${t.judul}',
+                      icon: const Icon(Icons.delete_outlined),
+                      onPressed: () => _hapus(t),
+                    ),
+                  ),
+                ],
+              ),
               onTap: () => _ubah(t),
             );
           },

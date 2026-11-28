@@ -296,4 +296,64 @@ void main() {
       await tutupDb(tester, db);
     });
   });
+
+  group('Hapus tugas #65', () {
+    Future<Database> tanamSatu(WidgetTester tester) async {
+      final db = await bukaDb(tester);
+      final matkul = await bacaDb(
+        tester,
+        () => MataKuliahRepository(db).tambah(const MataKuliah(nama: 'Mat')),
+      );
+      await bacaDb(
+        tester,
+        () => TugasRepository(db).tambah(
+          Tugas(
+            matkulId: matkul,
+            judul: 'PR 1',
+            deadline: DateTime.now().add(const Duration(days: 1)),
+          ),
+        ),
+      );
+      return db;
+    }
+
+    testWidgets('tiap baris ada tombol hapus', (tester) async {
+      final db = await tanamSatu(tester);
+      await pumpDaftar(tester, db);
+
+      expect(find.byTooltip('Hapus PR 1'), findsOneWidget);
+      await tutupDb(tester, db);
+    });
+
+    testWidgets('batal pertahankan baris', (tester) async {
+      final db = await tanamSatu(tester);
+      await pumpDaftar(tester, db);
+
+      await tester.tap(find.byTooltip('Hapus PR 1'));
+      await tester.pumpAndSettle();
+      expect(find.text('Hapus PR 1?'), findsOneWidget);
+      await tester.tap(find.text('Batal'));
+      await tester.pumpAndSettle();
+      expect(judulTerlihat(tester), <String>['PR 1']);
+      await tutupDb(tester, db);
+    });
+
+    testWidgets('hapus terkonfirmasi hilangkan baris', (tester) async {
+      final db = await tanamSatu(tester);
+      await pumpDaftar(tester, db);
+
+      await tester.tap(find.byTooltip('Hapus PR 1'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Hapus').last);
+      var hilang = false;
+      for (var i = 0; i < 25 && !hilang; i++) {
+        await tester.pump();
+        await biarDbSelesai(tester);
+        hilang = find.text('PR 1').evaluate().isEmpty;
+      }
+      expect(hilang, isTrue);
+      expect(find.textContaining('Belum ada tugas'), findsOneWidget);
+      await tutupDb(tester, db);
+    });
+  });
 }
