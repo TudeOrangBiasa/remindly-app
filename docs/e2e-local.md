@@ -20,6 +20,9 @@ HP tersambung via `adb devices`.
 ## Flow yang ada
 
 1. `smoke.yaml`: buka app, 3 destinasi navigasi tampil, empty state benar.
+2. `brief.yaml`: run penuh 9 langkah `AGENT_BRIEF.md` plus screenshot
+   per langkah. Jalankan `maestro test maestro/flows/brief.yaml`,
+   screenshot tersimpan di folder kerja, lampirkan ke PR, jangan commit.
 
 ## Jebakan yang sudah terbukti
 
