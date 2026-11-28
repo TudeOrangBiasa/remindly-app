@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:remindly_app/theme/branding.dart';
+import 'package:remindly_app/theme/tokens.dart';
 
 abstract final class AppTheme {
   static ThemeData light() {
@@ -32,8 +33,11 @@ abstract final class AppTheme {
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
           shape: const StadiumBorder(),
-          minimumSize: const Size(48, 48),
+          minimumSize: const Size(AppTokens.touchTarget, AppTokens.touchTarget),
         ),
+      ),
+      inputDecorationTheme: const InputDecorationTheme(
+        floatingLabelBehavior: FloatingLabelBehavior.auto,
       ),
     );
   }
