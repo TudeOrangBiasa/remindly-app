@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:remindly_app/database/app_database.dart';
 import 'package:remindly_app/database/mata_kuliah_repo.dart';
 import 'package:remindly_app/models/mata_kuliah.dart';
+import 'package:remindly_app/theme/theme_mode_scope.dart';
 import 'package:remindly_app/widgets/empty_state.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -164,7 +165,10 @@ class _CoursesPageState extends State<CoursesPage> {
   Widget build(BuildContext context) {
     final daftar = _daftar;
     return Scaffold(
-      appBar: AppBar(title: const Text('Mata Kuliah')),
+      appBar: AppBar(
+        title: const Text('Mata Kuliah'),
+        actions: const [ThemeModeButton()],
+      ),
       body: daftar == null
           ? const Center(child: CircularProgressIndicator())
           : FutureBuilder<List<MataKuliah>>(
