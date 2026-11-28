@@ -75,7 +75,7 @@ appId: com.remindly.app.remindly_app
       - tapOn: Next month
 - tapOn: ${output.besok},.*
 - tapOn: OK
-- tapOn: Judul
+- tapOn: 'Judul(, .*)?'
 - inputText: PR 1
 - tapOn: Tinggi
 - tapOn: Simpan
